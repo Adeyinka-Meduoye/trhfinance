@@ -144,7 +144,7 @@ const Layout: React.FC<LayoutProps> = ({ children, isAdmin = false }) => {
              <div className="bg-indigo-600 p-1 rounded mr-2 fallback-logo-sm hidden">
                 <ShieldCheck className="h-5 w-5 text-white" />
              </div>
-             <span className="font-bold text-lg tracking-tight">TRH Admin</span>
+             <span className="font-bold text-lg tracking-tight">TRH Finance</span>
           </div>
           <button className="md:hidden" onClick={() => setSidebarOpen(false)}>
             <X className="h-6 w-6 text-gray-400" />

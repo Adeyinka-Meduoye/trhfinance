@@ -38,7 +38,9 @@ const Dashboard = () => {
   const totalIncome = transactions.filter(t => t.type === 'INCOME').reduce((acc, curr) => acc + curr.amount, 0);
   const totalExpense = transactions.filter(t => t.type === 'EXPENSE').reduce((acc, curr) => acc + curr.amount, 0);
   const balance = totalIncome - totalExpense;
-  const pendingCount = requests.filter(r => r.status === 'PENDING').length;
+  
+  // FIX: Treat missing status as 'PENDING'
+  const pendingCount = requests.filter(r => (r.status || 'PENDING') === 'PENDING').length;
 
   const filteredLogs = auditLogs.filter(log => log.timestamp.startsWith(auditMonth));
 
@@ -89,7 +91,7 @@ const Dashboard = () => {
       <div className="flex justify-between items-center mb-8">
         <div>
             <h1 className="text-2xl font-bold text-white">Financial Overview</h1>
-            <p className="text-gray-400">Real-time insight into organization finances.</p>
+            <p className="text-gray-400">Real-time insight into TRH finances.</p>
         </div>
         <button 
             onClick={loadData}

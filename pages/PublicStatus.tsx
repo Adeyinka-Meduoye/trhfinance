@@ -43,6 +43,9 @@ const PublicStatus = () => {
     }
   };
 
+  // Helper to safely display status even if backend sends null
+  const safeStatus = result?.status || 'PENDING';
+
   return (
     <Layout>
       <div className="max-w-2xl mx-auto mt-10 px-4 sm:px-0">
@@ -90,8 +93,8 @@ const PublicStatus = () => {
                 <div className="px-6 py-4 border-b border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-800/50 gap-2">
                     <div>
                         <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Status</span>
-                        <div className={`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(result.status)}`}>
-                            {result.status}
+                        <div className={`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(safeStatus)}`}>
+                            {safeStatus}
                         </div>
                     </div>
                     <div className="text-left sm:text-right w-full sm:w-auto">

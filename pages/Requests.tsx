@@ -23,10 +23,16 @@ const Requests = () => {
     setLoading(true);
     try {
         const reqs = await getRequests();
-        // Sort pending first, then by date desc
+        
+        // Helper to normalize status for sorting
+        const getStatus = (r: PaymentRequest) => r.status || 'PENDING';
+
         const sorted = reqs.sort((a, b) => {
-            if (a.status === 'PENDING' && b.status !== 'PENDING') return -1;
-            if (a.status !== 'PENDING' && b.status === 'PENDING') return 1;
+            const statusA = getStatus(a);
+            const statusB = getStatus(b);
+
+            if (statusA === 'PENDING' && statusB !== 'PENDING') return -1;
+            if (statusA !== 'PENDING' && statusB === 'PENDING') return 1;
             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         });
         setRequests(sorted);
@@ -65,6 +71,9 @@ const Requests = () => {
     }
   };
 
+  // Helper to safely get status
+  const currentStatus = selectedRequest ? (selectedRequest.status || 'PENDING') : '';
+
   return (
     <Layout isAdmin>
       <div className="flex justify-between items-center mb-6">
@@ -90,7 +99,9 @@ const Requests = () => {
           <tbody className="bg-slate-800 divide-y divide-slate-700">
             {loading ? (
                  <tr><td colSpan={6} className="text-center py-8 text-gray-500">Loading requests...</td></tr>
-            ) : requests.map((req) => (
+            ) : requests.map((req) => {
+              const safeStatus = req.status || 'PENDING';
+              return (
               <tr key={req.id} className="hover:bg-slate-700 transition-colors">
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                   {new Date(req.createdAt).toLocaleDateString()}
@@ -106,11 +117,11 @@ const Requests = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                    ${req.status === 'PENDING' ? 'bg-yellow-900/50 text-yellow-300' : 
-                      req.status === 'APPROVED' ? 'bg-blue-900/50 text-blue-300' :
-                      req.status === 'PAID' ? 'bg-green-900/50 text-green-300' : 
+                    ${safeStatus === 'PENDING' ? 'bg-yellow-900/50 text-yellow-300' : 
+                      safeStatus === 'APPROVED' ? 'bg-blue-900/50 text-blue-300' :
+                      safeStatus === 'PAID' ? 'bg-green-900/50 text-green-300' : 
                       'bg-red-900/50 text-red-300'}`}>
-                    {req.status}
+                    {safeStatus}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -122,7 +133,7 @@ const Requests = () => {
                   </button>
                 </td>
               </tr>
-            ))}
+            )})}
             {!loading && requests.length === 0 && (
                 <tr><td colSpan={6} className="text-center py-4 text-gray-500">No requests found.</td></tr>
             )}
@@ -132,7 +143,9 @@ const Requests = () => {
 
       {/* Mobile Card View */}
       <div className="md:hidden space-y-4">
-        {!loading && requests.map((req) => (
+        {!loading && requests.map((req) => {
+          const safeStatus = req.status || 'PENDING';
+          return (
           <div 
             key={req.id} 
             className="bg-slate-800 p-4 rounded-lg border border-slate-700 shadow-sm active:bg-slate-700/80 transition-colors cursor-pointer" 
@@ -156,16 +169,16 @@ const Requests = () => {
             </div>
             <div className="flex justify-between items-center pt-3 border-t border-slate-700/50">
                 <span className={`px-2 py-1 inline-flex text-xs leading-4 font-semibold rounded-full 
-                    ${req.status === 'PENDING' ? 'bg-yellow-900/50 text-yellow-300' : 
-                      req.status === 'APPROVED' ? 'bg-blue-900/50 text-blue-300' :
-                      req.status === 'PAID' ? 'bg-green-900/50 text-green-300' : 
+                    ${safeStatus === 'PENDING' ? 'bg-yellow-900/50 text-yellow-300' : 
+                      safeStatus === 'APPROVED' ? 'bg-blue-900/50 text-blue-300' :
+                      safeStatus === 'PAID' ? 'bg-green-900/50 text-green-300' : 
                       'bg-red-900/50 text-red-300'}`}>
-                    {req.status}
+                    {safeStatus}
                 </span>
                 <span className="text-sm text-indigo-400 font-medium">View Details &rarr;</span>
             </div>
           </div>
-        ))}
+        )})}
         {loading && <div className="text-center py-8 text-gray-500">Loading...</div>}
         {!loading && requests.length === 0 && (
              <div className="text-center py-8 text-gray-500 bg-slate-800 rounded-lg border border-slate-700">
@@ -243,8 +256,9 @@ const Requests = () => {
                 </div>
             )}
 
-            {selectedRequest.status === 'PENDING' && !rejectMode && (
-                <div className="flex space-x-3 mt-6 pt-4 border-t border-slate-700">
+            {/* CRITICAL FIX: Allow approval if status is PENDING OR missing (undefined) */}
+            {(currentStatus === 'PENDING') && !rejectMode && (
+                <div className="flex space-x-3 mt-6 pt-4 border-t border-slate-700 animate-fade-in-up">
                 <button
                     onClick={() => handleStatusChange('REJECTED')}
                     className="flex-1 flex justify-center items-center px-4 py-2 border border-red-800 shadow-sm text-sm font-medium rounded-md text-red-300 bg-red-900/20 hover:bg-red-900/40"
@@ -288,7 +302,7 @@ const Requests = () => {
                 </div>
             )}
             
-            {selectedRequest.status === 'APPROVED' && (
+            {currentStatus === 'APPROVED' && (
                 <div className="mt-4 p-3 bg-blue-900/30 text-blue-300 text-sm rounded border border-blue-800">
                     This request is approved and waiting for disbursement processing.
                 </div>

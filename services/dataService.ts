@@ -10,7 +10,6 @@ import { GOOGLE_SCRIPT_URL, STORAGE_KEYS } from '../constants';
 // Helper to handle API calls
 const apiCall = async (action: string, method: 'GET' | 'POST' = 'GET', payload?: any) => {
   if (!GOOGLE_SCRIPT_URL) {
-    // We throw an error here so the UI components can catch it and display a "Configuration Needed" message
     throw new Error("Backend Configuration Missing: GOOGLE_SCRIPT_URL is empty.");
   }
 
@@ -19,12 +18,14 @@ const apiCall = async (action: string, method: 'GET' | 'POST' = 'GET', payload?:
       method,
     };
 
-    // Google Apps Script Web App POST requests require special handling (text/plain) to avoid CORS preflight issues
     if (method === 'POST' && payload) {
       options.body = JSON.stringify(payload);
     }
 
-    const url = `${GOOGLE_SCRIPT_URL}?action=${action}`;
+    // Add cache busting for GET requests to ensure fresh data
+    const cacheBuster = method === 'GET' ? `&_t=${Date.now()}` : '';
+    const url = `${GOOGLE_SCRIPT_URL}?action=${action}${cacheBuster}`;
+    
     const response = await fetch(url, options);
     
     if (!response.ok) {
@@ -33,7 +34,6 @@ const apiCall = async (action: string, method: 'GET' | 'POST' = 'GET', payload?:
     
     const data = await response.json();
     
-    // Check if the script returned an application-level error
     if (data && data.error) {
         throw new Error(data.error);
     }
@@ -50,7 +50,13 @@ const getCurrentUser = () => localStorage.getItem(STORAGE_KEYS.USER) || "Admin";
 // --- Requests ---
 
 export const submitRequest = async (data: Omit<PaymentRequest, 'id' | 'status' | 'createdAt' | 'updatedAt'>): Promise<PaymentRequest> => {
-  return await apiCall('submitRequest', 'POST', data);
+  // CRITICAL FIX: Explicitly set status to PENDING before sending to backend
+  // This ensures the record has a valid status even if the backend script doesn't default it.
+  const payload = {
+      ...data,
+      status: 'PENDING'
+  };
+  return await apiCall('submitRequest', 'POST', payload);
 };
 
 export const getRequests = async (): Promise<PaymentRequest[]> => {
@@ -60,7 +66,8 @@ export const getRequests = async (): Promise<PaymentRequest[]> => {
 
 export const getRequestById = async (id: string): Promise<PaymentRequest | undefined> => {
   const requests = await getRequests();
-  return requests.find(r => r.id === id);
+  // CRITICAL FIX: Case-insensitive and trimmed comparison
+  return requests.find(r => r.id && r.id.trim().toLowerCase() === id.trim().toLowerCase());
 };
 
 export const updateRequestStatus = async (id: string, status: RequestStatus, reason?: string, user?: string): Promise<void> => {

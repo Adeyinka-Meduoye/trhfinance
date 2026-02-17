@@ -1,6 +1,6 @@
 export const APP_NAME = "TRH Finance";
 export const CURRENCY_SYMBOL = "₦";
-export const LOGO_URL = "/logo.png"; // Place your image file in the public/root folder and name it logo.png
+export const LOGO_URL = "/images/logo-trans.png"; // Place your image file in the public/root folder and name it logo.png
 
 // TODO: Deploy the Google Apps Script and paste the Web App URL here
 export const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBhwPx2ms8ut0bQnXPb0tjK2mqywcm3t42kthqXtJU6RMeS_bycKgnZjdqpzbcq1Qt/exec"; 
