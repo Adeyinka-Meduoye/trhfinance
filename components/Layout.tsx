@@ -119,7 +119,7 @@ const Layout: React.FC<LayoutProps> = ({ children, isAdmin = false }) => {
         <footer className="bg-slate-800 border-t border-slate-700 mt-auto">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
             <p className="text-center text-sm text-gray-500">© {new Date().getFullYear()} {APP_NAME}. Secure Finance System.</p>
-            <p className="text-center text-xs text-indigo-400 mt-2 font-medium opacity-80 hover:opacity-100 transition-opacity">Developed by TRH INNOVATION & TECHNOLOGY</p>
+            <p className="text-center text-xs text-indigo-400 mt-2 font-medium opacity-80 hover:opacity-100 transition-opacity">Developed by TRH INNOVATION & TECHNOLOGY ORGANIZATION</p>
           </div>
         </footer>
       </div>
@@ -186,7 +186,7 @@ const Layout: React.FC<LayoutProps> = ({ children, isAdmin = false }) => {
             </button>
             <div className="mt-4 pt-4 border-t border-slate-800 text-center">
                <p className="text-[10px] text-gray-600 uppercase tracking-wider">Developed By</p>
-               <p className="text-xs text-indigo-500 font-bold mt-1">Developed by TRH INNOVATION & TECHNOLOGY</p>
+               <p className="text-xs text-indigo-500 font-bold mt-1">TRH INNOVATION & TECHNOLOGY ORGANIZATION</p>
             </div>
         </div>
       </div>
