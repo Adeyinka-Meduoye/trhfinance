@@ -2,7 +2,7 @@
 
 ## Overview
 
-Finance Disbursement & Expense Tracker is a lightweight web-based finance management application designed for small organizations, church departments, teams, and internal groups that need **transparent, traceable, and cash-controlled financial operations** without complex software.
+Finance Disbursement & Expense Tracker is a lightweight web-based finance management application designed for small organizations, church departments, teams, and internal groups that need **transparent, traceable, and cash-controlled financial operations** without complex software. It is designed for the TRH Finance, and developed by TRH INNOVATION & TECHNOLOGY
 
 The system replaces informal cash handling with a simple digital workflow while still allowing controlled cash payments when necessary. All financial records are stored in **Google Sheets**, making the system affordable, accessible, and easy to maintain without dedicated servers or databases.
 
