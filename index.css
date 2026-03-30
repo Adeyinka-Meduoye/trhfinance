@@ -1,0 +1,31 @@
+@keyframes gradient-x {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+@keyframes gradient-x-reverse {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-logo {
+  background: linear-gradient(to right, #20124d, #f58220, #f15a24, #20124d);
+  background-size: 200% 100%;
+  animation: gradient-x 4s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.animate-gradient-logo-bg {
+  background: linear-gradient(to right, #20124d, #f58220, #f15a24, #20124d);
+  background-size: 200% 100%;
+  animation: gradient-x 4s linear infinite;
+}
+
+.animate-gradient-white-grey {
+  background: linear-gradient(to left, #ffffff, #9ca3af, #ffffff);
+  background-size: 200% 100%;
+  animation: gradient-x-reverse 4s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

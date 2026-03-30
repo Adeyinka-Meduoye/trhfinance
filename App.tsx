@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import PublicRequest from './pages/PublicRequest';
 import PublicStatus from './pages/PublicStatus';
+import Home from './pages/Home';
+import PublicGive from './pages/PublicGive';
 import AdminLogin from './pages/AdminLogin';
 import Dashboard from './pages/Dashboard';
 import Requests from './pages/Requests';
@@ -26,7 +28,9 @@ const App = () => {
     <HashRouter>
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<PublicRequest />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/request" element={<PublicRequest />} />
+        <Route path="/give" element={<PublicGive />} />
         <Route path="/status" element={<PublicStatus />} />
         
         {/* Admin Auth */}
