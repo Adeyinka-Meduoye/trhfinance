@@ -71,8 +71,8 @@ const Home = () => {
                       <ShieldCheck className="h-6 w-6 text-indigo-400" />
                     </div>
                     <div>
-                      <h3 className="text-white font-semibold">Immutable Auditing</h3>
-                      <p className="text-sm text-slate-400 mt-1">Every transaction is cryptographically logged for absolute accountability.</p>
+                      <h3 className="text-white font-semibold">Clear Records</h3>
+                      <p className="text-sm text-slate-400 mt-1">Every transaction is recorded and safely stored.</p>
                     </div>
                   </div>
                   <div className="flex flex-col items-center text-center gap-4 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
@@ -80,8 +80,8 @@ const Home = () => {
                       <CheckCircle2 className="h-6 w-6 text-green-400" />
                     </div>
                     <div>
-                      <h3 className="text-white font-semibold">Real-time Tracking</h3>
-                      <p className="text-sm text-slate-400 mt-1">Instant visibility into request status with unique tracking identifiers.</p>
+                      <h3 className="text-white font-semibold">Stay Updated</h3>
+                      <p className="text-sm text-slate-400 mt-1">Check your request status anytime with your unique ID.</p>
                     </div>
                   </div>
                   <div className="flex flex-col items-center text-center gap-4 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
@@ -89,8 +89,8 @@ const Home = () => {
                       <FileText className="h-6 w-6 text-purple-400" />
                     </div>
                     <div>
-                      <h3 className="text-white font-semibold">Digital Proofs</h3>
-                      <p className="text-sm text-slate-400 mt-1">Automated receipt generation and digital signature verification.</p>
+                      <h3 className="text-white font-semibold">Transaction Proof</h3>
+                      <p className="text-sm text-slate-400 mt-1">Every payment is backed by receipts or digital confirmation.</p>
                     </div>
                   </div>
                 </div>

@@ -1,43 +1,59 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ADMIN_PASSCODE, STORAGE_KEYS, ALLOWED_USERS } from '../constants';
+import { STORAGE_KEYS } from '../constants';
 import { Lock, User, X } from 'lucide-react';
 
 const AdminLogin = () => {
   const [passcode, setPasscode] = useState('');
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
-    // Check Passcode first
-    if (passcode !== ADMIN_PASSCODE) {
-      setError('Incorrect passcode. Try again.');
-      setPasscode('');
-      return;
-    }
-
-    const trimmedInput = username.trim();
-    if (!trimmedInput) {
+    const trimmedUsername = username.trim();
+    if (!trimmedUsername) {
       setError("Please enter a username.");
+      setIsLoading(false);
       return;
     }
 
-    // Check against allowed users (Case-insensitive)
-    const matchedUser = ALLOWED_USERS.find(u => u.toLowerCase() === trimmedInput.toLowerCase());
-
-    if (!matchedUser) {
-      setError("Login not authorised.");
+    if (!passcode) {
+      setError("Please enter a passcode.");
+      setIsLoading(false);
       return;
     }
 
-    // Success
-    localStorage.setItem('trh_admin_auth', 'true');
-    localStorage.setItem(STORAGE_KEYS.USER, matchedUser); // Store the canonical name
-    navigate('/admin/dashboard');
+    try {
+      // Verify credentials via server-side API
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: trimmedUsername, passcode }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || 'Login failed. Please try again.');
+        if (response.status === 401) setPasscode('');
+        setIsLoading(false);
+        return;
+      }
+
+      // Success
+      localStorage.setItem('trh_admin_auth', 'true');
+      localStorage.setItem(STORAGE_KEYS.USER, data.username); // Store the canonical name from server
+      navigate('/admin/dashboard');
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -89,9 +105,12 @@ const AdminLogin = () => {
           {error && <p className="text-red-400 text-sm text-center font-medium animate-pulse">{error}</p>}
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
+            disabled={isLoading}
+            className={`w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold transition ${
+              isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-indigo-700'
+            }`}
           >
-            Unlock System
+            {isLoading ? 'Verifying...' : 'Unlock System'}
           </button>
         </form>
         <p className="text-xs text-gray-500 text-center mt-6">Secure Session Access</p>
