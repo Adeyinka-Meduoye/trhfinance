@@ -36,6 +36,13 @@ const AdminLogin = () => {
         body: JSON.stringify({ username: trimmedUsername, passcode }),
       });
 
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Non-JSON response from server:', text);
+        throw new Error('Server returned non-JSON response');
+      }
+
       const data = await response.json();
 
       if (!response.ok) {
@@ -50,6 +57,7 @@ const AdminLogin = () => {
       localStorage.setItem(STORAGE_KEYS.USER, data.username); // Store the canonical name from server
       navigate('/admin/dashboard');
     } catch (err) {
+      console.error('Login error:', err);
       setError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
