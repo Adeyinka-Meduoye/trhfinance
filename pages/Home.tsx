@@ -36,7 +36,7 @@ const Home = () => {
               </div>
             </div>
             <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl">
-              <span className="animate-gradient-white-grey">Empowering</span> <span className="animate-gradient-logo">Transparency</span> <span className="animate-gradient-white-grey">in Finance.</span>
+              <span className="animate-gradient-white-grey">Empowering</span> <span className="animate-gradient-logo">Trust & Transparency</span> <span className="animate-gradient-white-grey">in Finance.</span>
             </h1>
             <p className="mt-8 text-lg leading-8 text-slate-300 max-w-xl mx-auto">
               Welcome to the {APP_NAME} Portal
