@@ -39,7 +39,7 @@ const Home = () => {
               <span className="animate-gradient-white-grey">Empowering</span> <span className="animate-gradient-logo">Trust & Transparency</span> <span className="animate-gradient-white-grey">in Finance.</span>
             </h1>
             <p className="mt-8 text-lg leading-8 text-slate-300 max-w-xl mx-auto">
-              Welcome to the {APP_NAME} Portal
+              Welcome to the {APP_NAME} Portal.
               A simple and transparent way to give and request support, and stay informed on how funds are managed.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
