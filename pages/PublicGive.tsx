@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../components/Layout';
-import { APP_NAME } from '../constants';
-import { Heart, Landmark, Smartphone, QrCode, Copy, CheckCircle2, ArrowRight } from 'lucide-react';
+import { APP_NAME, INCOME_CATEGORIES } from '../constants';
+import { Heart, Landmark, Smartphone, QrCode, Copy, CheckCircle2, CreditCard, AlertCircle, Lock, MessageCircle, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
+import FinanceContactModal from '../components/FinanceContactModal';
+
 
 const PublicGive = () => {
-  const [copied, setCopied] = React.useState<string | null>(null);
-  const [activeQR, setActiveQR] = React.useState(0);
+  const [copied, setCopied] = useState<string | null>(null);
+  const [activeQR, setActiveQR] = useState(0);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -44,7 +47,19 @@ const PublicGive = () => {
   return (
     <Layout>
       <div className="relative isolate min-h-screen bg-slate-950 py-24 px-6">
-        {/* Decorative Background */}
+        {/* Background Image Layer */}
+        <div className="absolute inset-0 -z-20 overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80&w=2000"
+            alt="Giving Background"
+            className="h-full w-full object-cover opacity-30 scale-105 animate-pulse-slow"
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute inset-0 bg-slate-950/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/40 to-slate-950"></div>
+        </div>
+
+        {/* Decorative Background Blur */}
         <div className="absolute inset-0 -z-10 overflow-hidden">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-indigo-600/10 blur-[120px] rounded-full"></div>
         </div>
@@ -66,6 +81,53 @@ const PublicGive = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Online Giving Section - Coming Soon */}
+            <div className="lg:col-span-3">
+              <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl p-10 border border-indigo-500/30 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 -m-4 h-32 w-32 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-all duration-700"></div>
+                <div className="absolute bottom-0 left-0 -m-4 h-24 w-24 bg-purple-500/10 rounded-full blur-2xl"></div>
+                
+                <div className="flex flex-col md:flex-row items-center justify-between gap-10 relative z-10">
+                  <div className="max-w-xl text-center md:text-left">
+                    <div className="flex items-center justify-center md:justify-start gap-3 mb-6">
+                      <div className="p-3 rounded-2xl bg-indigo-500/10 ring-1 ring-indigo-500/20">
+                        <CreditCard className="h-8 w-8 text-indigo-400" />
+                      </div>
+                      <div className="inline-flex items-center px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-black text-indigo-400 uppercase tracking-widest animate-pulse">
+                        Coming Soon
+                      </div>
+                    </div>
+                    <h2 className="text-3xl font-black text-white mb-4 tracking-tight">Direct Online Giving</h2>
+                    <p className="text-lg text-slate-400 leading-relaxed">
+                      We are currently setting up our secure online payment gateway to make your giving experience even smoother. 
+                      Soon, you'll be able to give directly using your card or bank app with just a few clicks.
+                    </p>
+                  </div>
+
+                  <div className="w-full max-w-sm">
+                    <div className="bg-slate-950/50 p-8 rounded-3xl border border-slate-800/50 backdrop-blur-md flex flex-col items-center text-center space-y-6 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent opacity-50"></div>
+                      <div className="p-4 rounded-full bg-indigo-500/10 relative">
+                        <Sparkles className="h-10 w-10 text-indigo-400 animate-pulse" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-white mb-2">Almost Ready!</h3>
+                        <p className="text-sm text-slate-500">
+                          Our team is finalizing the integration. In the meantime, please use the 
+                          <span className="text-indigo-400 font-bold"> Bank Transfer</span> or 
+                          <span className="text-indigo-400 font-bold"> USSD</span> options below.
+                        </p>
+                      </div>
+                      <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent"></div>
+                      <p className="text-[10px] text-slate-600 uppercase font-black tracking-[0.2em]">
+                        Securely Powered by Paystack
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Bank Transfer Section */}
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-slate-800 shadow-2xl">
@@ -176,9 +238,13 @@ const PublicGive = () => {
             <h2 className="text-3xl font-black text-white mb-4">Need Help with Giving or Requests?</h2>
             <p className="text-slate-400 mb-8 max-w-xl mx-auto">Our finance team is here to guide you through contributions and support requests with clarity and ease.</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="https://wa.me/2348039195845" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto px-8 py-4 animate-gradient-logo-bg text-white font-bold rounded-xl hover:shadow-lg hover:shadow-indigo-500/20 transition-all transform hover:-translate-y-1">
+                <button 
+                  onClick={() => setIsContactModalOpen(true)}
+                  className="w-full sm:w-auto px-8 py-4 animate-gradient-logo-bg text-white font-bold rounded-xl hover:shadow-lg hover:shadow-indigo-500/20 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2"
+                >
+                    <MessageCircle className="h-5 w-5" />
                     Contact Finance Team
-                </a>
+                </button>
                 <Link to="/request" className="w-full sm:w-auto px-8 py-4 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-all border border-slate-700">
                     Submit Fund Request
                 </Link>
@@ -186,6 +252,11 @@ const PublicGive = () => {
           </div>
         </div>
       </div>
+      
+      <FinanceContactModal 
+        isOpen={isContactModalOpen} 
+        onClose={() => setIsContactModalOpen(false)} 
+      />
     </Layout>
   );
 };
