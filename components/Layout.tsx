@@ -1,11 +1,11 @@
 import React, { ReactNode, useState } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  FileText, 
-  CreditCard, 
-  TrendingUp, 
-  ClipboardList, 
+import {
+  LayoutDashboard,
+  FileText,
+  CreditCard,
+  TrendingUp,
+  ClipboardList,
   LogOut,
   Menu,
   X,
@@ -47,18 +47,23 @@ const Layout: React.FC<LayoutProps> = ({ children, isAdmin = false }) => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center">
-                 {/* Logo Image */}
-                 <img src={LOGO_URL} alt="Logo" className="h-10 w-auto mr-3 object-contain" onError={(e) => {
+                {/* Logo Image */}
+                <img
+                  src="/images/logo-trans.png"
+                  alt="Logo"
+                  className="h-10 w-auto mr-3 object-contain"
+                  onError={(e) => {
                     // Fallback if image not found
                     e.currentTarget.style.display = 'none';
                     e.currentTarget.parentElement?.querySelector('.fallback-logo')?.classList.remove('hidden');
-                 }}/>
-                 <div className="bg-indigo-600 p-2 rounded-lg mr-3 fallback-logo hidden">
-                    <ShieldCheck className="h-6 w-6 text-white" />
-                 </div>
-                 <Link to="/" className="font-bold text-xl text-white tracking-tight hover:text-gray-200 transition-colors">{APP_NAME}</Link>
+                  }}
+                />
+                <div className="bg-indigo-600 p-2 rounded-lg mr-3 fallback-logo hidden">
+                  <ShieldCheck className="h-6 w-6 text-white" />
+                </div>
+                <Link to="/" className="font-bold text-xl text-white tracking-tight hover:text-gray-200 transition-colors">{APP_NAME}</Link>
               </div>
-              
+
               {/* Desktop Navigation */}
               <div className="hidden md:flex space-x-4">
                 <Link to="/give" className="text-gray-300 hover:text-white hover:bg-slate-700 px-3 py-2 rounded-md text-sm font-medium transition-colors">Give Now</Link>
@@ -89,29 +94,29 @@ const Layout: React.FC<LayoutProps> = ({ children, isAdmin = false }) => {
           {publicMenuOpen && (
             <div className="md:hidden bg-slate-800 border-t border-slate-700">
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <Link 
-                  to="/give" 
+                <Link
+                  to="/give"
                   onClick={() => setPublicMenuOpen(false)}
                   className="text-gray-300 hover:text-white hover:bg-slate-700 block px-3 py-2 rounded-md text-base font-medium"
                 >
                   Give Now
                 </Link>
-                <Link 
-                  to="/request" 
+                <Link
+                  to="/request"
                   onClick={() => setPublicMenuOpen(false)}
                   className="text-gray-300 hover:text-white hover:bg-slate-700 block px-3 py-2 rounded-md text-base font-medium"
                 >
                   Submit Request
                 </Link>
-                <Link 
-                  to="/status" 
+                <Link
+                  to="/status"
                   onClick={() => setPublicMenuOpen(false)}
                   className="text-gray-300 hover:text-white hover:bg-slate-700 block px-3 py-2 rounded-md text-base font-medium"
                 >
                   Check Status
                 </Link>
-                <Link 
-                  to="/admin/login" 
+                <Link
+                  to="/admin/login"
                   onClick={() => setPublicMenuOpen(false)}
                   className="text-indigo-400 hover:text-indigo-300 hover:bg-slate-900 block px-3 py-2 rounded-md text-base font-medium"
                 >
@@ -145,14 +150,14 @@ const Layout: React.FC<LayoutProps> = ({ children, isAdmin = false }) => {
       <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-slate-950 text-white transform transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0 border-r border-slate-800`}>
         <div className="flex items-center justify-between h-16 px-4 bg-slate-950 border-b border-slate-800">
           <div className="flex items-center">
-             <img src={LOGO_URL} alt="Logo" className="h-8 w-auto mr-2 object-contain" onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.parentElement?.querySelector('.fallback-logo-sm')?.classList.remove('hidden');
-             }}/>
-             <div className="bg-indigo-600 p-1 rounded mr-2 fallback-logo-sm hidden">
-                <ShieldCheck className="h-5 w-5 text-white" />
-             </div>
-             <span className="font-bold text-lg tracking-tight">TRH Admin</span>
+            <img src={LOGO_URL} alt="Logo" className="h-8 w-auto mr-2 object-contain" onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              e.currentTarget.parentElement?.querySelector('.fallback-logo-sm')?.classList.remove('hidden');
+            }} />
+            <div className="bg-indigo-600 p-1 rounded mr-2 fallback-logo-sm hidden">
+              <ShieldCheck className="h-5 w-5 text-white" />
+            </div>
+            <span className="font-bold text-lg tracking-tight">TRH Admin</span>
           </div>
           <button className="md:hidden" onClick={() => setSidebarOpen(false)}>
             <X className="h-6 w-6 text-gray-400" />
@@ -161,11 +166,11 @@ const Layout: React.FC<LayoutProps> = ({ children, isAdmin = false }) => {
 
         {/* User Info */}
         <div className="px-4 py-4 bg-slate-900 border-b border-slate-800 flex items-center">
-            <UserCircle className="w-8 h-8 text-indigo-500 mr-3" />
-            <div className="overflow-hidden">
-                <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Logged in as</p>
-                <p className="text-sm font-bold text-white truncate">{currentUser}</p>
-            </div>
+          <UserCircle className="w-8 h-8 text-indigo-500 mr-3" />
+          <div className="overflow-hidden">
+            <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Logged in as</p>
+            <p className="text-sm font-bold text-white truncate">{currentUser}</p>
+          </div>
         </div>
 
         <nav className="mt-5 px-2 space-y-1">
@@ -185,17 +190,17 @@ const Layout: React.FC<LayoutProps> = ({ children, isAdmin = false }) => {
           })}
         </nav>
         <div className="absolute bottom-0 w-full p-4 bg-slate-950 border-t border-slate-800">
-            <button 
-                onClick={handleLogout}
-                className="flex items-center w-full px-2 py-2 text-sm font-medium text-red-400 hover:text-red-300 transition-colors hover:bg-slate-900 rounded"
-            >
-                <LogOut className="mr-3 h-5 w-5" />
-                Sign Out
-            </button>
-            <div className="mt-4 pt-4 border-t border-slate-800 text-center">
-               <p className="text-[10px] text-gray-600 uppercase tracking-wider">Developed By</p>
-               <p className="text-xs text-indigo-500 font-bold mt-1">TRH INNOVATION & TECHNOLOGY ORGANISATION</p>
-            </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center w-full px-2 py-2 text-sm font-medium text-red-400 hover:text-red-300 transition-colors hover:bg-slate-900 rounded"
+          >
+            <LogOut className="mr-3 h-5 w-5" />
+            Sign Out
+          </button>
+          <div className="mt-4 pt-4 border-t border-slate-800 text-center">
+            <p className="text-[10px] text-gray-600 uppercase tracking-wider">Developed By</p>
+            <p className="text-xs text-indigo-500 font-bold mt-1">TRH INNOVATION & TECHNOLOGY ORGANISATION</p>
+          </div>
         </div>
       </div>
 
