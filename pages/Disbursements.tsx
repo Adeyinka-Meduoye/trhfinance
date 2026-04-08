@@ -13,6 +13,7 @@ const Disbursements = () => {
   const [selectedReq, setSelectedReq] = useState<PaymentRequest | null>(null);
   const [step, setStep] = useState<1 | 2>(1);
   const [loading, setLoading] = useState(true);
+  const [showConfirmPayment, setShowConfirmPayment] = useState(false);
   const currentUser = localStorage.getItem(STORAGE_KEYS.USER) || 'Admin';
   
   // Form State
@@ -69,6 +70,11 @@ const Disbursements = () => {
         }
     }
 
+    if (!showConfirmPayment) {
+        setShowConfirmPayment(true);
+        return;
+    }
+
     try {
         await createDisbursement({
             requestId: selectedReq.id,
@@ -88,6 +94,7 @@ const Disbursements = () => {
         });
 
         // Reset and Refresh
+        setShowConfirmPayment(false);
         setSelectedReq(null);
         refreshData();
     } catch (e) {
@@ -312,12 +319,32 @@ const Disbursements = () => {
                 )}
 
                 <div className="mt-6">
-                    <button
-                        onClick={handleFinalize}
-                        className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none"
-                    >
-                        Confirm & Mark Paid
-                    </button>
+                    {!showConfirmPayment ? (
+                        <button
+                            onClick={handleFinalize}
+                            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none"
+                        >
+                            Confirm & Mark Paid
+                        </button>
+                    ) : (
+                        <div className="bg-slate-900 p-4 rounded-lg border border-slate-700 animate-fade-in-up">
+                            <p className="text-white text-center mb-4">Are you sure you want to confirm this payment and mark it as <strong>PAID</strong>?</p>
+                            <div className="flex space-x-3">
+                                <button
+                                    onClick={() => setShowConfirmPayment(false)}
+                                    className="flex-1 px-4 py-2 border border-slate-600 text-sm font-medium rounded-md text-gray-300 hover:bg-slate-700"
+                                >
+                                    No
+                                </button>
+                                <button
+                                    onClick={handleFinalize}
+                                    className="flex-1 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+                                >
+                                    Yes, Confirm
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         )}

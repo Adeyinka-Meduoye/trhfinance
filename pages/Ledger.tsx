@@ -52,10 +52,16 @@ const Ledger = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const amount = parseFloat(formData.amount);
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid amount greater than zero.");
+        return;
+    }
+
     try {
         await recordTransaction({
             type: modalType,
-            amount: parseFloat(formData.amount),
+            amount: amount,
             category: formData.category,
             description: formData.description,
             date: formData.date,
@@ -122,7 +128,7 @@ const Ledger = () => {
             </div>
             <div>
                 <p className="text-sm text-gray-400">Monthly Income</p>
-                <p className="text-xl font-bold text-white">{CURRENCY_SYMBOL}{totalIncome.toFixed(2)}</p>
+                <p className="text-xl font-bold text-white">{CURRENCY_SYMBOL}{(totalIncome || 0).toFixed(2)}</p>
             </div>
         </div>
         <div className="bg-slate-800 p-4 rounded-lg border border-slate-700 flex items-center">
@@ -131,7 +137,7 @@ const Ledger = () => {
             </div>
             <div>
                 <p className="text-sm text-gray-400">Monthly Expenses</p>
-                <p className="text-xl font-bold text-white">{CURRENCY_SYMBOL}{totalExpense.toFixed(2)}</p>
+                <p className="text-xl font-bold text-white">{CURRENCY_SYMBOL}{(totalExpense || 0).toFixed(2)}</p>
             </div>
         </div>
         <div className="bg-slate-800 p-4 rounded-lg border border-slate-700 flex items-center">
@@ -141,7 +147,7 @@ const Ledger = () => {
             <div>
                 <p className="text-sm text-gray-400">Net Difference</p>
                 <p className={`text-xl font-bold ${netDifference >= 0 ? 'text-blue-400' : 'text-amber-400'}`}>
-                    {netDifference > 0 ? '+' : ''}{CURRENCY_SYMBOL}{netDifference.toFixed(2)}
+                    {netDifference > 0 ? '+' : ''}{CURRENCY_SYMBOL}{(netDifference || 0).toFixed(2)}
                 </p>
             </div>
         </div>
@@ -176,7 +182,7 @@ const Ledger = () => {
                         </span>
                         </td>
                         <td className={`px-6 py-4 whitespace-nowrap text-right text-sm font-bold ${t.type === 'INCOME' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                        {t.type === 'INCOME' ? '+' : '-'}{CURRENCY_SYMBOL}{t.amount.toFixed(2)}
+                        {t.type === 'INCOME' ? '+' : '-'}{CURRENCY_SYMBOL}{(t.amount || 0).toFixed(2)}
                         </td>
                     </tr>
                     ))

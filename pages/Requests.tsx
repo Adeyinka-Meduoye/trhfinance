@@ -12,6 +12,7 @@ const Requests = () => {
   const [rejectMode, setRejectMode] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showApproveConfirm, setShowApproveConfirm] = useState(false);
   
   const currentUser = localStorage.getItem(STORAGE_KEYS.USER) || 'Admin';
 
@@ -60,12 +61,18 @@ const Requests = () => {
           return;
       }
 
+      if (status === 'APPROVED' && !showApproveConfirm) {
+          setShowApproveConfirm(true);
+          return;
+      }
+
       await updateRequestStatus(
           selectedRequest.id, 
           status, 
           status === 'REJECTED' ? rejectionReason : undefined,
           currentUser
       );
+      setShowApproveConfirm(false);
       closeModal();
       refreshData();
     }
@@ -271,6 +278,26 @@ const Requests = () => {
                 >
                     <Check className="w-4 h-4 mr-2" /> Approve
                 </button>
+                </div>
+            )}
+
+            {showApproveConfirm && (
+                <div className="mt-6 pt-4 border-t border-slate-700 animate-fade-in-up">
+                    <p className="text-white text-center mb-4">Are you sure you want to <strong>APPROVE</strong> this request?</p>
+                    <div className="flex space-x-3">
+                        <button
+                            onClick={() => setShowApproveConfirm(false)}
+                            className="flex-1 px-4 py-2 border border-slate-600 text-sm font-medium rounded-md text-gray-300 hover:bg-slate-700"
+                        >
+                            No
+                        </button>
+                        <button
+                            onClick={() => handleStatusChange('APPROVED')}
+                            className="flex-1 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                        >
+                            Yes, Approve
+                        </button>
+                    </div>
                 </div>
             )}
 
