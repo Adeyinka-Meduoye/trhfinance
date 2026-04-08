@@ -11,6 +11,7 @@ const Ledger = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<TransactionType>('INCOME');
   const [loading, setLoading] = useState(true);
+  const [showConfirmSave, setShowConfirmSave] = useState(false);
   const currentUser = localStorage.getItem(STORAGE_KEYS.USER) || 'Admin';
   
   // Default to current month (YYYY-MM)
@@ -57,7 +58,11 @@ const Ledger = () => {
         alert("Please enter a valid amount greater than zero.");
         return;
     }
+    setShowConfirmSave(true);
+  };
 
+  const handleConfirmSave = async () => {
+    const amount = parseFloat(formData.amount);
     try {
         await recordTransaction({
             type: modalType,
@@ -68,6 +73,7 @@ const Ledger = () => {
             recordedBy: currentUser
         });
         await loadData();
+        setShowConfirmSave(false);
         setIsModalOpen(false);
     } catch (e) {
         alert("Failed to save transaction.");
@@ -204,7 +210,10 @@ const Ledger = () => {
 
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+            setIsModalOpen(false);
+            setShowConfirmSave(false);
+        }}
         title={`Record ${modalType}`}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -247,9 +256,32 @@ const Ledger = () => {
                     onChange={(e) => setFormData({...formData, date: e.target.value})}
                 />
             </div>
-            <button type="submit" className={`w-full py-2 text-white font-medium rounded-md ${modalType === 'INCOME' ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'}`}>
-                Save Record
-            </button>
+
+            {!showConfirmSave ? (
+                <button type="submit" className={`w-full py-2 text-white font-medium rounded-md ${modalType === 'INCOME' ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'}`}>
+                    Save Record
+                </button>
+            ) : (
+                <div className="bg-slate-900 p-4 rounded-lg border border-slate-700 animate-fade-in-up mt-4">
+                    <p className="text-white text-center mb-4">Are you sure you want to save this <strong>{modalType.toLowerCase()}</strong> record?</p>
+                    <div className="flex space-x-3">
+                        <button
+                            type="button"
+                            onClick={() => setShowConfirmSave(false)}
+                            className="flex-1 px-4 py-2 border border-slate-600 text-sm font-medium rounded-md text-gray-300 hover:bg-slate-700"
+                        >
+                            No
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleConfirmSave}
+                            className={`flex-1 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white ${modalType === 'INCOME' ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'}`}
+                        >
+                            Yes, Save
+                        </button>
+                    </div>
+                </div>
+            )}
         </form>
       </Modal>
     </Layout>
