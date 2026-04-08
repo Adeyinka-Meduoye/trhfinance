@@ -57,18 +57,18 @@ _Sent from the TRH Finance Portal_`;
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl"
+            className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl flex flex-col max-h-[90vh]"
           >
-            <div className="absolute top-0 right-0 p-4">
+            <div className="absolute top-0 right-0 p-4 z-10">
               <button
                 onClick={onClose}
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors"
+                className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors bg-slate-900/50 backdrop-blur-sm"
               >
                 <X className="h-6 w-6" />
               </button>
             </div>
 
-            <div className="p-8">
+            <div className="p-6 sm:p-8 overflow-y-auto scrollbar-hide sm:scrollbar-default">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-3 rounded-2xl bg-indigo-500/10 ring-1 ring-indigo-500/20">
                   <MessageCircle className="h-6 w-6 text-indigo-400" />

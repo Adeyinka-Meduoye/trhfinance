@@ -8,6 +8,15 @@
   100% { background-position: 0% 50%; }
 }
 
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.4; transform: scale(1.05); }
+  50% { opacity: 0.5; transform: scale(1.08); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 10s ease-in-out infinite;
+}
+
 .animate-gradient-logo {
   background: linear-gradient(to right, #20124d, #f58220, #f15a24, #20124d);
   background-size: 200% 100%;
@@ -28,4 +37,33 @@
   animation: gradient-x-reverse 4s linear infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }

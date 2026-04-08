@@ -10,6 +10,7 @@ import Requests from './pages/Requests';
 import Disbursements from './pages/Disbursements';
 import Ledger from './pages/Ledger';
 import AuditLogs from './pages/AuditLogs';
+import { HelpModalProvider } from './context/HelpModalContext';
 
 // Guard for Protected Routes
 const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
@@ -25,29 +26,31 @@ const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
 
 const App = () => {
   return (
-    <HashRouter>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/request" element={<PublicRequest />} />
-        <Route path="/give" element={<PublicGive />} />
-        <Route path="/status" element={<PublicStatus />} />
-        
-        {/* Admin Auth */}
-        <Route path="/admin/login" element={<AdminLogin />} />
+    <HelpModalProvider>
+      <HashRouter>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/request" element={<PublicRequest />} />
+          <Route path="/give" element={<PublicGive />} />
+          <Route path="/status" element={<PublicStatus />} />
+          
+          {/* Admin Auth */}
+          <Route path="/admin/login" element={<AdminLogin />} />
 
-        {/* Protected Admin Routes */}
-        <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/admin/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
-        <Route path="/admin/disbursements" element={<ProtectedRoute><Disbursements /></ProtectedRoute>} />
-        <Route path="/admin/ledger" element={<ProtectedRoute><Ledger /></ProtectedRoute>} />
-        <Route path="/admin/audit" element={<ProtectedRoute><AuditLogs /></ProtectedRoute>} />
-        
-        {/* Fallback */}
-        <Route path="/admin/*" element={<Navigate to="/admin/dashboard" />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </HashRouter>
+          {/* Protected Admin Routes */}
+          <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/admin/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
+          <Route path="/admin/disbursements" element={<ProtectedRoute><Disbursements /></ProtectedRoute>} />
+          <Route path="/admin/ledger" element={<ProtectedRoute><Ledger /></ProtectedRoute>} />
+          <Route path="/admin/audit" element={<ProtectedRoute><AuditLogs /></ProtectedRoute>} />
+          
+          {/* Fallback */}
+          <Route path="/admin/*" element={<Navigate to="/admin/dashboard" />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </HashRouter>
+    </HelpModalProvider>
   );
 };
 

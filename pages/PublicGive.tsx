@@ -4,13 +4,12 @@ import { APP_NAME, INCOME_CATEGORIES } from '../constants';
 import { Heart, Landmark, Smartphone, QrCode, Copy, CheckCircle2, CreditCard, AlertCircle, Lock, MessageCircle, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
-import FinanceContactModal from '../components/FinanceContactModal';
-
+import { useHelpModal } from '../context/HelpModalContext';
 
 const PublicGive = () => {
   const [copied, setCopied] = useState<string | null>(null);
   const [activeQR, setActiveQR] = useState(0);
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const { openHelpModal } = useHelpModal();
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -239,11 +238,11 @@ const PublicGive = () => {
             <p className="text-slate-400 mb-8 max-w-xl mx-auto">Our finance team is here to guide you through contributions and support requests with clarity and ease.</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <button 
-                  onClick={() => setIsContactModalOpen(true)}
+                  onClick={openHelpModal}
                   className="w-full sm:w-auto px-8 py-4 animate-gradient-logo-bg text-white font-bold rounded-xl hover:shadow-lg hover:shadow-indigo-500/20 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2"
                 >
                     <MessageCircle className="h-5 w-5" />
-                    Contact Finance Team
+                    Need Help?
                 </button>
                 <Link to="/request" className="w-full sm:w-auto px-8 py-4 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-all border border-slate-700">
                     Submit Fund Request
@@ -252,11 +251,6 @@ const PublicGive = () => {
           </div>
         </div>
       </div>
-      
-      <FinanceContactModal 
-        isOpen={isContactModalOpen} 
-        onClose={() => setIsContactModalOpen(false)} 
-      />
     </Layout>
   );
 };

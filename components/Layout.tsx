@@ -10,9 +10,11 @@ import {
   Menu,
   X,
   ShieldCheck,
-  UserCircle
+  UserCircle,
+  HelpCircle
 } from 'lucide-react';
 import { APP_NAME, STORAGE_KEYS, LOGO_URL } from '../constants';
+import { useHelpModal } from '../context/HelpModalContext';
 
 interface LayoutProps {
   children: ReactNode;
@@ -22,6 +24,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, isAdmin = false }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [publicMenuOpen, setPublicMenuOpen] = useState(false);
+  const { openHelpModal } = useHelpModal();
   const location = useLocation();
   const navigate = useNavigate();
   const currentUser = localStorage.getItem(STORAGE_KEYS.USER) || 'Admin';
@@ -135,6 +138,16 @@ const Layout: React.FC<LayoutProps> = ({ children, isAdmin = false }) => {
             <p className="text-center text-xs text-indigo-400 mt-2 font-medium opacity-80 hover:opacity-100 transition-opacity">Developed by TRH INNOVATION & TECHNOLOGY ORGANISATION</p>
           </div>
         </footer>
+
+        {/* Floating Need Help Button */}
+        <button
+          onClick={openHelpModal}
+          className="fixed bottom-6 right-6 z-50 p-4 bg-indigo-600 text-white rounded-full shadow-2xl shadow-indigo-500/40 hover:bg-indigo-700 transition-all hover:scale-110 group flex items-center gap-2 border border-white/10"
+          title="Need Help?"
+        >
+          <HelpCircle className="h-6 w-6" />
+          <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 font-bold whitespace-nowrap">Need Help?</span>
+        </button>
       </div>
     );
   }
@@ -223,6 +236,16 @@ const Layout: React.FC<LayoutProps> = ({ children, isAdmin = false }) => {
           {children}
         </main>
       </div>
+
+      {/* Floating Need Help Button */}
+      <button
+        onClick={openHelpModal}
+        className="fixed bottom-6 right-6 z-50 p-4 bg-indigo-600 text-white rounded-full shadow-2xl shadow-indigo-500/40 hover:bg-indigo-700 transition-all hover:scale-110 group flex items-center gap-2 border border-white/10"
+        title="Need Help?"
+      >
+        <HelpCircle className="h-6 w-6" />
+        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 font-bold whitespace-nowrap">Need Help?</span>
+      </button>
     </div>
   );
 };
